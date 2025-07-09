@@ -8,11 +8,17 @@ import './Dashboard.css';
 const Dashboard = () => {
     const dispatch = useDispatch();
 
-    const adminState = useSelector((state) => state.admin || {});
-    const { stats = {}, loading, error, recentBooks = [], recentUsers = [] } = adminState;
+    const adminState = useSelector((state) => state.AdminDashboard);
+    const {
+        stats = {},
+        loading,
+        error,
+        recentBooks = [],
+        recentUsers = [],
+    } = adminState;
 
     useEffect(() => {
-        dispatch(fetchDashboardRequest());
+        dispatch(fetchDashboardRequest()); // Fetch dashboard stats on load
     }, [dispatch]);
 
     const bookPieData = {
@@ -47,20 +53,16 @@ const Dashboard = () => {
                         </div>
                         <div className="col-md-3">
                             <div className="card text-dark bg-warning shadow-sm border-0 text-center p-3">
-                                <h6 className="text-white">Purchased Books</h6>
+                                <h6 className="text-white">Active Rentals</h6>
                                 <h3 className="text-white">{stats.purchasedBooks || 0}</h3>
                             </div>
                         </div>
-                        <div className="col-md-3">
-                            <div className="card text-white bg-success shadow-sm border-0 text-center p-3">
-                                <h6>New Users</h6>
-                                <h3>{stats.newUsers || 0}</h3>
-                            </div>
-                        </div>
+                        {/* You can add more summary cards here */}
                     </div>
 
-                    {/* Users Table */}
+                    {/* Tables Section */}
                     <div className="row mt-5 g-4">
+                        {/* Users Table */}
                         <div className="col-md-6">
                             <div className="card shadow-sm border-0">
                                 <div className="card-header bg-white fw-bold">Users List</div>
@@ -130,7 +132,7 @@ const Dashboard = () => {
                         <div className="col-md-6 mx-auto text-center">
                             <div className="card shadow-sm border-0">
                                 <div className="card-header bg-white fw-bold">Book Summary</div>
-                                <div className="card-body" style={{ height: '360px', marginLeft: '130px' }}>
+                                <div className="card-body" style={{ height: '360px' }}>
                                     <Pie data={bookPieData} />
                                 </div>
                             </div>

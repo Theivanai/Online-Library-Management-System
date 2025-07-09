@@ -20,7 +20,6 @@ const PaymentHistorySchema = new mongoose.Schema({
     bookId: { type: String },
     userName: { type: String },
     userEmail: { type: String },
-    // userNumber: { type: String },
     bookTitle: String,
     amountPaid: Number,
     paymentId: String,

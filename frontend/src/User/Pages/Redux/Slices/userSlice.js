@@ -31,63 +31,109 @@
 
 // export default userSlice.reducers;
 
-
-
-
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    profile: null,
-    history: [],
-    dashboard: null,
-    loading: false,
-    error: null,
+  profile: null,
+  history: [],
+  dashboard: null,
+  loading: false,
+  error: null,
+  user: null,
+  token: null,
+  mustResetPassword: false,
+  message: '', // ✅ New field to store password update success message
 };
 
 const userSlice = createSlice({
-    name: 'user',
-    initialState,
-    reducers: {
-        fetchUserProfileRequest: (state) => {
-            state.loading = true;
-            // state.error = null;
-        },
-        fetchUserProfileSuccess: (state, action) => {
-            state.profile = action.payload;
-            state.loading = false;
-        },
-        fetchUserProfileFailure: (state, action) => {
-            state.error = action.payload;
-            state.loading = false;
-        },
-        fetchUserHistorySuccess: (state, action) => {
-            state.history = action.payload;
-        },
+  name: 'user',
+  initialState,
+  reducers: {
 
-        //dashboard actions
-        fetchUserDashboardRequest: (state) => {
-            state.loading = true;
-            state.error = null;
-        },
-        fetchUserDashboardSuccess: (state, action) => {
-            state.dashboard = action.payload;
-            state.loading = false;
-        },
-        fetchUserDashboardFailure: (state, action) => {
-            state.error = action.payload;
-            state.loading = false;
-        },
+    // --- Profile ---
+    fetchUserProfileRequest: (state) => {
+      state.loading = true;
+      state.error = null;
     },
+    fetchUserProfileSuccess: (state, action) => {
+      state.profile = action.payload;
+      state.loading = false;
+    },
+    fetchUserProfileFailure: (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
+
+    // --- History ---
+    fetchUserHistorySuccess: (state, action) => {
+      state.history = action.payload;
+    },
+
+    // --- Dashboard ---
+    fetchUserDashboardRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchUserDashboardSuccess: (state, action) => {
+      state.dashboard = action.payload;
+      state.loading = false;
+    },
+    fetchUserDashboardFailure: (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
+
+    // ✅ --- Password Change ---
+    changePasswordRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+      state.message = '';
+    },
+    changePasswordSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload; // success message from API
+    },
+    changePasswordFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // user-login
+    loginRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    loginSuccess: (state, action) => {
+      state.loading = false;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.mustResetPassword = action.payload.mustResetPassword;
+    },
+    loginFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
 });
 
 export const {
-    fetchUserProfileRequest,
-    fetchUserProfileSuccess,
-    fetchUserProfileFailure,
-    fetchUserHistorySuccess,
-    fetchUserDashboardRequest,
-    fetchUserDashboardSuccess,
-    fetchUserDashboardFailure,
+  fetchUserProfileRequest,
+  fetchUserProfileSuccess,
+  fetchUserProfileFailure,
+  fetchUserHistorySuccess,
+  fetchUserDashboardRequest,
+  fetchUserDashboardSuccess,
+  fetchUserDashboardFailure,
+
+  // ✅ Export newly added actions
+  changePasswordRequest,
+  changePasswordSuccess,
+  changePasswordFailure,
+
+  //user-login actions
+  loginRequest, 
+  loginSuccess, 
+  loginFailure
 } = userSlice.actions;
 
 export default userSlice.reducer;

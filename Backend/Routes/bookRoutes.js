@@ -210,7 +210,6 @@ router.post('/add', verifyTokenAndAdmin, upload.fields([{ name: 'image', maxCoun
 //         });
 //     }
 // });
-
 router.put('/update/:id', verifyTokenAndAdmin, upload.fields([
     { name: 'image', maxCount: 1 },
     { name: 'bookFile', maxCount: 1 }
@@ -222,6 +221,11 @@ router.put('/update/:id', verifyTokenAndAdmin, upload.fields([
             return res.status(400).json({ message: "Invalid bookId." });
         }
 
+        const existingBook = await Book.findById(bookId);
+        if (!existingBook) {
+            return res.status(404).json({ message: "Book not found" });
+        }
+
         const updateFields = {
             title: req.body.title,
             author: req.body.author,
@@ -229,12 +233,11 @@ router.put('/update/:id', verifyTokenAndAdmin, upload.fields([
             category: req.body.category,
             price: req.body.price,
             stock: req.body.stock !== undefined ? req.body.stock : existingBook.stock,
-            // quantity: parseInt(req.body.quantity) || 0,
-            status: req.body.status,
+            status: req.body.status || existingBook.status,
         };
 
         // Handle issuedTo logic
-        if (req.body.status === "Issued") {
+        if (updateFields.status === "Issued") {
             if (!req.body.issuedTo) {
                 return res.status(400).json({ message: "issuedTo is required when book is Issued." });
             }
@@ -246,21 +249,17 @@ router.put('/update/:id', verifyTokenAndAdmin, upload.fields([
             updateFields.issuedTo = null;
         }
 
-        // Handle updated image
+        // Handle image
         if (req.files?.image?.[0]) {
             updateFields.image = req.files.image[0].filename;
         }
 
-        // Handle updated book PDF file
+        // Handle bookFile
         if (req.files?.bookFile?.[0]) {
             updateFields.bookFile = req.files.bookFile[0].filename;
         }
 
         const updatedBook = await Book.findByIdAndUpdate(bookId, updateFields, { new: true });
-
-        if (!updatedBook) {
-            return res.status(404).json({ message: "Book not found" });
-        }
 
         res.status(200).json({
             message: "Book updated successfully",

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     fetchUserDashboardRequest,
@@ -6,30 +6,31 @@ import {
 } from '../Pages/Redux/Slices/userSlice';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
+
 const Dashboard = () => {
     const dispatch = useDispatch();
-    const { dashboard, loading, profile } = useSelector(state => state.user);
+    const { dashboard, loading, profile } = useSelector(state => state.UserDashboard);
 
     useEffect(() => {
         dispatch(fetchUserDashboardRequest());
         dispatch(fetchUserProfileRequest());
     }, [dispatch]);
 
-    if (loading || !dashboard) return <p className="text-center mt-5">Loading...</p>;
+    // ✅ Must be before any early return
+    const pieData = useMemo(() => [
+        { name: 'Available Books', value: dashboard?.availableBooks || 0 },
+        { name: 'Books Purchased', value: dashboard?.purchasedBooks || 0 },
+        { name: 'Payments Made', value: dashboard?.totalPayments || 0 },
+    ], [dashboard]);
+
+    if (loading || !dashboard) {
+        return <p className="text-center mt-5">Loading...</p>;
+    }
 
     const COLORS = [
-        "rgba(54, 162, 235, 0.8)",  // Darker Blue - Available Books
-        "rgba(40, 167, 69, 0.8)",   // Dark Green - Books Purchased
-        "rgba(255, 193, 7, 0.8)",   // Dark Yellow - Payments Made
-        "rgba(220, 53, 69, 0.8)"    // Dark Red (optional if added more)
-    ];
-
-
-
-    const pieData = [
-        { name: 'Available Books', value: dashboard.availableBooks },
-        { name: 'Books Purchased', value: dashboard.purchasedBooks },
-        { name: 'Payments Made', value: dashboard.totalPayments },
+        "rgba(54, 162, 235, 0.8)",  // Blue
+        "rgba(40, 167, 69, 0.8)",   // Green
+        "rgba(255, 193, 7, 0.8)",   // Yellow
     ];
 
     return (
@@ -43,10 +44,18 @@ const Dashboard = () => {
             {/* Profile Summary */}
             {profile && (
                 <div className="d-flex justify-content-center mb-4">
-                    <div className="card p-4 shadow-sm" style={{ maxWidth: '500px', width: '100%', backgroundColor: '#28e5', borderRadius: '15px' }}>
+                    <div
+                        className="card p-4 shadow-sm"
+                        style={{
+                            maxWidth: '500px',
+                            width: '100%',
+                            backgroundColor: '#007BFF',
+                            borderRadius: '15px',
+                        }}
+                    >
                         <h5 className="mb-3 text-center fw-bold text-white">PROFILE SUMMARY</h5>
-                        <p className='text-white'><strong>Name:</strong> {profile.name}</p>
-                        <p className='text-white'><strong>Email:</strong> {profile.email}</p>
+                        <p className="text-white"><strong>Name:</strong> {profile.name}</p>
+                        <p className="text-white"><strong>Email:</strong> {profile.email}</p>
                     </div>
                 </div>
             )}
@@ -54,7 +63,7 @@ const Dashboard = () => {
             {/* Metric Cards */}
             <div className="row g-4">
                 <div className="col-md-3 col-sm-6">
-                    <div className="card text-white border-0 shadow text-center" style={{ backgroundColor: '#3366FF', borderRadius: '15px' }}>
+                    <div className="card text-white border-0 shadow text-center hover-card" style={{ backgroundColor: '#3366FF', borderRadius: '15px' }}>
                         <div className="card-body">
                             <h6 className="mb-2 fw-semibold">Available Books</h6>
                             <h3>{dashboard.availableBooks}</h3>
@@ -63,25 +72,25 @@ const Dashboard = () => {
                 </div>
 
                 <div className="col-md-3 col-sm-6">
-                    <div className="card text-dark border-0 shadow text-center" style={{ backgroundColor: '#FFCC33', borderRadius: '15px' }}>
+                    <div className="card text-white border-0 shadow text-center hover-card" style={{ backgroundColor: '#FFA500', borderRadius: '15px' }}>
                         <div className="card-body">
-                            <h6 className="mb-2 fw-semibold text-white">Books Purchased</h6>
-                            <h3 className='text-white'>{dashboard.purchasedBooks}</h3>
+                            <h6 className="mb-2 fw-semibold">Books Purchased</h6>
+                            <h3>{dashboard.purchasedBooks}</h3>
                         </div>
                     </div>
                 </div>
 
                 <div className="col-md-3 col-sm-6">
-                    <div className="card text-dark border-0 shadow text-center" style={{ backgroundColor: '#FFE066', borderRadius: '15px' }}>
+                    <div className="card text-white border-0 shadow text-center hover-card" style={{ backgroundColor: '#FFC107', borderRadius: '15px' }}>
                         <div className="card-body">
-                            <h6 className="mb-2 fw-semibold text-white">Payments Made</h6>
-                            <h3 className='text-white'>{dashboard.totalPayments}</h3>
+                            <h6 className="mb-2 fw-semibold">Payments Made</h6>
+                            <h3>{dashboard.totalPayments}</h3>
                         </div>
                     </div>
                 </div>
 
                 <div className="col-md-3 col-sm-6">
-                    <div className="card text-white border-0 shadow text-center" style={{ backgroundColor: '#28A745', borderRadius: '15px' }}>
+                    <div className="card text-white border-0 shadow text-center hover-card" style={{ backgroundColor: '#28A745', borderRadius: '15px' }}>
                         <div className="card-body">
                             <h6 className="mb-2 fw-semibold">Total Paid</h6>
                             <h3>₹ {dashboard.totalAmountPaid}</h3>
@@ -89,8 +98,6 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
-
-
 
             {/* Pie Chart */}
             <div className="mt-5">
@@ -115,7 +122,6 @@ const Dashboard = () => {
                     </PieChart>
                 </div>
             </div>
-
         </div>
     );
 };

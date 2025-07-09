@@ -117,28 +117,6 @@ router.get("/all", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //update user
-// router.put("/update/:id", verifyTokenAndAdmin, upload.single("profile"), async (req, res) => {
-//   try {
-//     const { name, email, password, phone, address, gender, role } = req.body;
-
-//     const updateFields = { name, email, password, phone, address, gender, role }
-
-//     if (password) {
-//       const hashedPassword = await bcrypt.hash(password, 10);
-//       updateFields.password = hashedPassword;
-//     }
-
-//     if (req.file) {
-//       updateFields.profile = req.file.filename;
-//     }
-
-//     const updatedUser = await User.findByIdAndUpdate(req.params.id, updateFields, { new: true });
-//     res.json({ message: "User updated successfully", updatedUser });
-//   } catch (err) {
-//     res.status(500).json({ message: "Failed to update user" });
-//   }
-// });
-
 router.put('/update/:id', upload.single('profileImage'), async (req, res) => {
   try {
     const user = await User.findById(req.params.id);

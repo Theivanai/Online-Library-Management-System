@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const express = require("express");
-// const Razorpay = require("razorpay");
 const router = express.Router();
 const PaymentHistory = require("../Models/PaymentHistory");
 const BookHistory = require("../Models/BookHistory");
@@ -10,7 +9,7 @@ const Book = require("../Models/Book");
 const verifyToken = require("../Middleware/Auth");
 require("dotenv").config();
 
-// const jwt = require('jsonwebtoken');
+
 
 
 // Create Razorpay Order
@@ -63,49 +62,7 @@ router.post('/create-order', verifyToken, async (req, res) => {
 //     res.status(200).json({ message: "Book purchased successfully" });
 // });
 
-// router.get("/book-status/:bookId", verifyToken, async (req, res) => {
-//     try {
-//         const history = await PaymentHistory.findOne({
-//             userId: req.user.id,
-//             bookId: req.params.bookId,
-//             status: "Purchased"
-//         });
 
-//         if (!history) return res.json({ purchased: false });
-
-//         res.json({
-//             purchased: true,
-//             startDate: history.startDate,
-//             endDate: history.endDate
-//         });
-//     } catch (err) {
-//         res.status(500).json({ message: "Failed to check purchase status" });
-//     }
-// });
-
-// router.get("/book-status/:bookId", verifyToken, async (req, res) => {
-//     try {
-//         const user = await User.findById(req.user.id);
-//         if (!user) return res.status(404).json({ message: "User not found" });
-
-//         const history = await PaymentHistory.findOne({
-//             userId: user.userId,
-//             bookId: req.params.bookId,
-//             status: "Purchased"
-//         });
-
-//         if (!history) return res.json({ purchased: false });
-
-//         res.json({
-//             purchased: true,
-//             startDate: history.startDate,
-//             endDate: history.endDate
-//         });
-//     } catch (err) {
-//         console.error("Purchase status check failed:", err);
-//         res.status(500).json({ message: "Failed to check purchase status" });
-//     }
-// });
 
 
 router.get("/book-status/:bookId", verifyToken, async (req, res) => {

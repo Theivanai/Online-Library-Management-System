@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
-// const BookHistory = require('../Models/BookHistory');
-
 const verifyTokenAndAdmmin = require('../Middleware/Auth');
 const PaymentHistory = require('../Models/PaymentHistory');
 const User = require("../Models/User");

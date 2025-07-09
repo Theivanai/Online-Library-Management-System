@@ -27,7 +27,10 @@ exports.registerAdmin = async (req, res) => {
         await adminUser.save();
 
         // Generate JWT for new admin
-        const token = jwt.sign({ id: adminUser._id, role: adminUser.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ id: adminUser._id, 
+            role: adminUser.role }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '7d' });
 
         res.status(201).json({
             success: true,
