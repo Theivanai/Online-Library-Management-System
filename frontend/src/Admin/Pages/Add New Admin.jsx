@@ -379,7 +379,7 @@ const AddAdmin = () => {
                     </button>
                 </form>
 
-                <ToastContainer position="top-center" autoClose={1500} closeButton={false} />
+                <ToastContainer position="top-center" autoClose={1200} closeButton={false} />
             </div>
         </div>
     );

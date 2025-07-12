@@ -256,19 +256,128 @@
 // export default Login;
 
 
+// import React, { useState } from 'react';
+// import axios from 'axios';
+// import { useNavigate } from 'react-router-dom';
+// import { useFormik } from 'formik';
+// import * as Yup from 'yup';
+// import './AdminLogin.css';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+// import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
+
+// const Login = () => {
+//     const [showpassword, setShowPassword] = useState(false);
+//     const navigate = useNavigate();
+
+//     const formik = useFormik({
+//         initialValues: {
+//             email: '',
+//             password: '',
+//         },
+//         validationSchema: Yup.object({
+//             email: Yup.string().email('Invalid email address').required('Email is required'),
+//             password: Yup.string()
+//                 .required('Password is required')
+//                 .matches(/^[a-zA-Z0-9]+$/, 'Alphanumeric only')
+//                 .min(6, 'Min 6 characters')
+//                 .max(8, 'Max 8 characters'),
+//         }),
+//         onSubmit: async (values) => {
+//             try {
+//                 const res = await axios.post(`http://localhost:8000/api/admin/admin/login`, {
+//                     ...values,
+//                     role: 'admin'
+//                 });
+
+//                 localStorage.setItem('token', res.data.token);
+//                 localStorage.setItem('role', 'admin');
+//                 localStorage.setItem('userData', JSON.stringify(res.data.user));
+
+//                 toast.success('Login successful');
+
+//                 setTimeout(() => {
+//                     navigate(res.data.mustResetPassword ? '/reset-password' : '/admin/dashboard');
+//                 }, 1500);
+//             } catch (err) {
+//                 toast.error(err.response?.data?.message || 'Login failed');
+//             }
+//         },
+//     });
+
+
+
+//     return (
+//         <div className='admin-login-page'>
+//             <div className='top-right-user-icon' onClick={() => navigate('/user-login')}>
+//                 <FaUser title='user login' />
+
+//             </div>
+//             <div className='admin-login-card'>
+//                 <h2 className="admin-login-title">ADMIN</h2>
+
+//                 <form onSubmit={formik.handleSubmit}>
+//                     <input
+//                         type="email"
+//                         name="email"
+//                         placeholder="Email"
+//                         value={formik.values.email}
+//                         onChange={formik.handleChange}
+//                         onBlur={formik.handleBlur} style={{ outline: 'none', boxShadow: 'none' }}
+//                         className={formik.touched.email && formik.errors.email ? 'form-control is-invalid' : 'form-control'}
+//                     />
+//                     {formik.touched.email && formik.errors.email && (
+//                         <div className="invalid-feedback">{formik.errors.email}</div>
+//                     )}
+
+//                     <div className="password-container">
+//                         <input
+//                             type={showpassword ? "text" : "password"}
+//                             name="password"
+//                             placeholder="Password"
+//                             maxLength={8}
+//                             value={formik.values.password}
+//                             onChange={formik.handleChange}
+//                             onBlur={formik.handleBlur} style={{ outline: 'none', boxShadow: 'none' }}
+//                             className={formik.touched.password && formik.errors.password ? 'form-control is-invalid' : 'form-control'}
+//                         />
+//                         <span className="toggle-eye" onClick={() => setShowPassword(prev => !prev)}>
+//                             {showpassword ? <FaEye /> : <FaEyeSlash />}
+//                         </span>
+//                     </div>
+//                     {formik.touched.password && formik.errors.password && (
+//                         <div className="invalid-feedback">{formik.errors.password}</div>
+//                     )}
+
+//                     <button type="submit" className="admin-login-btn">LOGIN</button>
+
+
+//                 </form>
+//             </div>
+
+//             <ToastContainer position="top-center" autoClose={1500} closeButton={false} />
+//         </div>
+//     );
+// };
+
+// export default Login;
+
+
+
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import './AdminLogin.css';
+import { useDispatch } from 'react-redux';
+import { adminLoginRequest } from '../Redux/admin/adminSlice';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
+import './AdminLogin.css';
 
 const Login = () => {
-    const [showpassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const formik = useFormik({
         initialValues: {
@@ -276,46 +385,25 @@ const Login = () => {
             password: '',
         },
         validationSchema: Yup.object({
-            email: Yup.string().email('Invalid email address').required('Email is required'),
+            email: Yup.string().email('Invalid email').required('Email is required'),
             password: Yup.string()
                 .required('Password is required')
                 .matches(/^[a-zA-Z0-9]+$/, 'Alphanumeric only')
                 .min(6, 'Min 6 characters')
                 .max(8, 'Max 8 characters'),
         }),
-        onSubmit: async (values) => {
-            try {
-                const res = await axios.post(`http://localhost:8000/api/admin/admin/login`, {
-                    ...values,
-                    role: 'admin'
-                });
-
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('role', 'admin');
-                localStorage.setItem('userData', JSON.stringify(res.data.user));
-
-                toast.success('Login successful');
-
-                setTimeout(() => {
-                    navigate(res.data.mustResetPassword ? '/reset-password' : '/admin/dashboard');
-                }, 1500);
-            } catch (err) {
-                toast.error(err.response?.data?.message || 'Login failed');
-            }
+        onSubmit: (values) => {
+            dispatch(adminLoginRequest({ ...values, toast, navigate }));
         },
     });
-
-    
 
     return (
         <div className='admin-login-page'>
             <div className='top-right-user-icon' onClick={() => navigate('/user-login')}>
                 <FaUser title='user login' />
-
             </div>
             <div className='admin-login-card'>
                 <h2 className="admin-login-title">ADMIN</h2>
-
                 <form onSubmit={formik.handleSubmit}>
                     <input
                         type="email"
@@ -324,7 +412,7 @@ const Login = () => {
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur} style={{ outline: 'none', boxShadow: 'none' }}
-                        className={formik.touched.email && formik.errors.email ? 'form-control is-invalid' : 'form-control'}
+                        className={formik.touched.email && formik.errors.email ? 'form-control is-invalid' : 'form-control'} 
                     />
                     {formik.touched.email && formik.errors.email && (
                         <div className="invalid-feedback">{formik.errors.email}</div>
@@ -332,7 +420,7 @@ const Login = () => {
 
                     <div className="password-container">
                         <input
-                            type={showpassword ? "text" : "password"}
+                            type={showPassword ? "text" : "password"}
                             name="password"
                             placeholder="Password"
                             maxLength={8}
@@ -342,7 +430,7 @@ const Login = () => {
                             className={formik.touched.password && formik.errors.password ? 'form-control is-invalid' : 'form-control'}
                         />
                         <span className="toggle-eye" onClick={() => setShowPassword(prev => !prev)}>
-                            {showpassword ? <FaEye /> : <FaEyeSlash />}
+                            {showPassword ? <FaEye /> : <FaEyeSlash />}
                         </span>
                     </div>
                     {formik.touched.password && formik.errors.password && (
@@ -350,12 +438,10 @@ const Login = () => {
                     )}
 
                     <button type="submit" className="admin-login-btn">LOGIN</button>
-
-
                 </form>
             </div>
 
-            <ToastContainer position="top-center" autoClose={1500} closeButton={false} />
+            <ToastContainer position="top-center" autoClose={1200} closeButton={false} />
         </div>
     );
 };

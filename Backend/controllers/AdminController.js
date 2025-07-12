@@ -52,7 +52,7 @@ exports.registerAdmin = async (req, res) => {
 
 exports.loginAdmin = async (req, res) => {
     const { email, password } = req.body;
-    console.log(email, password);
+    // console.log(email, password);
     try {
         // Validate input
         if (!email || !password) {
@@ -90,7 +90,7 @@ exports.loginAdmin = async (req, res) => {
         const token = jwt.sign(
             { id: adminUser._id, role: adminUser.role },
             process.env.JWT_SECRET,
-            { expiresIn: '7d' }
+            { expiresIn: '1d' }
         );
 
         res.status(200).json({
@@ -137,7 +137,7 @@ exports.loginUser = async (req, res) => {
                 message: "Invalid email or user",
             });
         }
-        console.log(user)
+        // console.log(user)
         // Compare passwords using the model method
         // const isMatch = await user.comparePassword(password);
         const isMatch = await bcrypt.compare(password, user.password);

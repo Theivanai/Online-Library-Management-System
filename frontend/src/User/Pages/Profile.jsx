@@ -69,7 +69,7 @@ const Profile = () => {
                   <label><b>Current Password</b></label>
                   <input
                     type={showCurrent ? "text" : "password"}
-                    className="form-control"
+                    className="form-control" style={{ outline: 'none', boxShadow: 'none' }}
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                   />
@@ -86,7 +86,7 @@ const Profile = () => {
                   <label><b>New Password</b></label>
                   <input
                     type={showNew ? "text" : "password"}
-                    className="form-control"
+                    className="form-control" style={{ outline: 'none', boxShadow: 'none' }}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                   />
@@ -103,12 +103,12 @@ const Profile = () => {
                   <label><b>Confirm New Password</b></label>
                   <input
                     type={showConfirm ? "text" : "password"}
-                    className="form-control"
+                    className="form-control" style={{ outline: 'none', boxShadow: 'none' }}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                   <span
-                    className="position-absolute"
+                    className="position-absolute" 
                     style={{ top: '38px', right: '10px', cursor: 'pointer' }}
                     onClick={() => setShowConfirm(!showConfirm)}
                   >

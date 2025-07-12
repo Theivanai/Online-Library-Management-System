@@ -302,6 +302,7 @@ const AddBook = () => {
                                         value={formData.title}
                                         onChange={handleChange}
                                         required
+                                        style={{ outline: 'none', boxShadow: 'none' }}
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3">
@@ -312,6 +313,7 @@ const AddBook = () => {
                                         value={formData.author}
                                         onChange={handleChange}
                                         required
+                                        style={{ outline: 'none', boxShadow: 'none' }}
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3">
@@ -322,6 +324,7 @@ const AddBook = () => {
                                         value={formData.isbn}
                                         onChange={handleChange}
                                         required
+                                        style={{ outline: 'none', boxShadow: 'none' }}
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3">
@@ -332,6 +335,7 @@ const AddBook = () => {
                                         value={formData.category}
                                         onChange={handleChange}
                                         required
+                                        style={{ outline: 'none', boxShadow: 'none' }}
                                     />
                                 </Form.Group>
                                 <Row>
@@ -344,6 +348,7 @@ const AddBook = () => {
                                                 value={formData.price}
                                                 onChange={handleChange}
                                                 required
+                                                style={{ outline: 'none', boxShadow: 'none' }}
                                             />
                                         </Form.Group>
                                     </Col>
@@ -356,6 +361,7 @@ const AddBook = () => {
                                                 value={formData.stock}
                                                 onChange={handleChange}
                                                 required
+                                                style={{ outline: 'none', boxShadow: 'none' }}
                                             />
                                         </Form.Group>
                                     </Col>
@@ -368,6 +374,7 @@ const AddBook = () => {
                                         onChange={handleImageChange}
                                         ref={imageRef}
                                         required
+                                        style={{ outline: 'none', boxShadow: 'none' }}
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-4">
@@ -378,13 +385,14 @@ const AddBook = () => {
                                         onChange={handleBookFileChange}
                                         ref={bookFileRef}
                                         required
+                                        style={{ outline: 'none', boxShadow: 'none' }}
                                     />
                                 </Form.Group>
                                 <Button variant="success" type="submit" className="w-100 fw-bold" disabled={loading}>
                                     {loading ? 'Adding...' : 'ADD BOOK'}
                                 </Button>
                             </Form>
-                            <ToastContainer position="top-center" autoClose={2000} />
+                            <ToastContainer position="top-center" autoClose={1200} closeButton={false}/>
                         </Card.Body>
                     </Card>
                 </Col>

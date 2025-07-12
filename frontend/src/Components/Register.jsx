@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import './Register.css';
 import lib3 from './Assets/lib3.jpeg'
+import { toast, ToastContainer } from 'react-toastify';
 
 const RegisterForm = () => {
     const [name, setname] = useState('');
@@ -10,20 +11,18 @@ const RegisterForm = () => {
     const [password, setpassword] = useState('');
 
     const navigate = useNavigate();
-    // const handleChange = (e) => {
-    //     setform({ ...form, [e.target.name]: e.target.value});
-    // };
+ 
 
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
             .post(`http://localhost:8000/api/user/register`, { name, email, password })
             .then((res) => {
-                alert("Registration successful!");
+                toast.success("User Registered")
                 navigate("/login");
             })
             .catch((err) => {
-                alert("User already exists!");
+                toast.error("User Already Exists!")
                 console.log(err);
             });
     };
@@ -58,6 +57,8 @@ const RegisterForm = () => {
                     </p>
                 </div>
             </form>
+
+            <ToastContainer position="top-right" autoClose={1200} closeButton={false} />
         </div>
     );
 };

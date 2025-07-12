@@ -37,6 +37,7 @@ const initialState = {
   profile: null,
   history: [],
   dashboard: null,
+  user: null,
   loading: false,
   error: null,
   user: null,
@@ -64,10 +65,7 @@ const userSlice = createSlice({
       state.loading = false;
     },
 
-    // --- History ---
-    fetchUserHistorySuccess: (state, action) => {
-      state.history = action.payload;
-    },
+
 
     // --- Dashboard ---
     fetchUserDashboardRequest: (state) => {
@@ -113,6 +111,22 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
+    //user-register
+    registerUserRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+      state.message = '';
+    },
+    registerUserSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    registerUserFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
   },
 });
 
@@ -131,9 +145,15 @@ export const {
   changePasswordFailure,
 
   //user-login actions
-  loginRequest, 
-  loginSuccess, 
-  loginFailure
+  loginRequest,
+  loginSuccess,
+  loginFailure,
+
+  //user-register actions
+  registerUserRequest,
+  registerUserSuccess,
+  registerUserFailure,
+
 } = userSlice.actions;
 
 export default userSlice.reducer;

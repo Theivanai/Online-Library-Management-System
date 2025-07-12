@@ -11,7 +11,9 @@ const userSlice = createSlice({
         showReminder: false,
     },
 
+
     reducers: {
+        //fetch users
         fetchUsersRequest: (state) => {
             state.loading = true;
         },

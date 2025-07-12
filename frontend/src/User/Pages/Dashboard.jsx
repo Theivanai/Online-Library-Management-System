@@ -19,7 +19,7 @@ const Dashboard = () => {
     // ✅ Must be before any early return
     const pieData = useMemo(() => [
         { name: 'Available Books', value: dashboard?.availableBooks || 0 },
-        { name: 'Books Purchased', value: dashboard?.purchasedBooks || 0 },
+        { name: 'Rental Books', value: dashboard?.purchasedBooks || 0 },
         { name: 'Payments Made', value: dashboard?.totalPayments || 0 },
     ], [dashboard]);
 
@@ -74,7 +74,7 @@ const Dashboard = () => {
                 <div className="col-md-3 col-sm-6">
                     <div className="card text-white border-0 shadow text-center hover-card" style={{ backgroundColor: '#FFA500', borderRadius: '15px' }}>
                         <div className="card-body">
-                            <h6 className="mb-2 fw-semibold">Books Purchased</h6>
+                            <h6 className="mb-2 fw-semibold">Rental Books</h6>
                             <h3>{dashboard.purchasedBooks}</h3>
                         </div>
                     </div>

@@ -11,6 +11,8 @@ import AdminDashboard from '../src/Redux/admin/adminSlice'
 import UserDashboard from '../src/User/Pages/Redux/Slices/userSlice'
 import UserPayment from '../src/User/Pages/Redux/Slices/paymentSlice'
 import userbooks from '../src/User/Pages/Redux/book/bookSlice'
+import userlogin from '../src/User/Pages/Redux/Slices/userSlice'
+import userregister from '../src/User/Pages/Redux/Slices/userSlice'
 
 const rootReducer = combineReducers({
 
@@ -21,12 +23,14 @@ const rootReducer = combineReducers({
     Newadmin: Newadmin,
     Userlists: Userlists,
     Booklists: Booklists,
-    AddBooks:AddBooks,
-    AdminDashboard:AdminDashboard,
-    UserDashboard:UserDashboard,
-    UserPayment:UserPayment,
-    userbooks:userbooks,
-    
+    AddBooks: AddBooks,
+    AdminDashboard: AdminDashboard,
+    UserDashboard: UserDashboard,
+    UserPayment: UserPayment,
+    userbooks: userbooks,
+    userlogin:userlogin,
+    userregister:userregister
+  
 
 
 });

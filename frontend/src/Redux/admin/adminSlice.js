@@ -1,6 +1,3 @@
-// 
-
-// src/Redux/admin/adminSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const adminSlice = createSlice({
@@ -9,6 +6,7 @@ const adminSlice = createSlice({
         loading: false,
         error: null,
         stats: {},
+        admin: null,
         recentBooks: [],
         recentUsers: [],
     },
@@ -56,7 +54,21 @@ const adminSlice = createSlice({
         resetAdminStatus: (state) => {
             state.success = false;
             state.error = null;
-        }
+        },
+
+        //add adminlogin
+        adminLoginRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        adminLoginSuccess: (state, action) => {
+            state.loading = false;
+            state.admin = action.payload;
+        },
+        adminLoginFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     },
 });
 
@@ -65,7 +77,10 @@ export const {
     addBookRequest, addBookSuccess, addBookFailure, registerAdminRequest,
     registerAdminSuccess,
     registerAdminFailure,
-    resetAdminStatus
+    resetAdminStatus,
+    adminLoginRequest,
+    adminLoginSuccess,
+    adminLoginFailure,
 } = adminSlice.actions;
 
 export default adminSlice.reducer;

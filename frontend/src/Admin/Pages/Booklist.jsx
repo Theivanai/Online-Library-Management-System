@@ -232,7 +232,7 @@ function BookList() {
         </div>
       </div>
 
-      <ToastContainer position="top-center" autoClose={1500} />
+      <ToastContainer position="top-center" autoClose={1200} closeButton={false} />
     </div>
   );
 }

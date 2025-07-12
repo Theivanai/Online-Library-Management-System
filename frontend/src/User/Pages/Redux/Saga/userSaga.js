@@ -275,7 +275,13 @@ import {
     // User Login
     loginRequest,
     loginSuccess,
-    loginFailure
+    loginFailure,
+
+    //user-register
+    registerUserRequest,
+    registerUserSuccess,
+    registerUserFailure,
+
 } from '../Slices/userSlice';
 
 
@@ -407,10 +413,33 @@ function* handleChangePassword(action) {
 //     ]);
 // }
 
+//worker:user-register
+function* registerUserSaga(action) {
+    try {
+        const formData = new FormData();
+        for (let key in action.payload) {
+            formData.append(key, action.payload[key]);
+        }
+
+        yield call(() =>
+            axios.post(`http://localhost:8000/api/user/register`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            })
+        );
+
+        yield put(registerUserSuccess('User registered'));
+    } catch (error) {
+        yield put(registerUserFailure(error.response?.data?.message || 'User Registration failed'));
+    }
+}
+
+
 
 export default function* userSaga() {
-   yield takeLatest(loginRequest.type, loginUserSaga);
-   yield takeLatest(fetchUserProfileRequest.type, fetchUserProfileAndHistory);
-   yield takeLatest(fetchUserDashboardRequest.type, fetchUserDashboard);
-   yield takeLatest(changePasswordRequest.type, handleChangePassword);
+    yield takeLatest(loginRequest.type, loginUserSaga);
+    yield takeLatest(fetchUserProfileRequest.type, fetchUserProfileAndHistory);
+    yield takeLatest(fetchUserDashboardRequest.type, fetchUserDashboard);
+    yield takeLatest(changePasswordRequest.type, handleChangePassword);
+    yield takeLatest(registerUserRequest.type, registerUserSaga);
+
 }

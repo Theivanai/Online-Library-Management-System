@@ -126,8 +126,6 @@
 
 
 
-
-// src/Pages/User/MyBooks.jsx
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyBooksRequest } from './Redux/Slices/myBooksSlice';
@@ -136,14 +134,10 @@ import { Container, Table, Badge } from 'react-bootstrap';
 
 const MyBooks = () => {
     const dispatch = useDispatch();
-    // console.log(useSelector((s) => s.Userbooks))
-    // const { books, loading, error } = useSelector((state) => state.myBooks);
-    const { books, loading , error } = useSelector((state) => state.Userbooks);
-
-    // console.log(books)
+    const { books, loading, error } = useSelector((state) => state.Userbooks);
 
     const [selectedPDF, setSelectedPDF] = useState(null);
-    const [setshowmodal] = useState(false);
+    const [showModal, setshowmodal] = useState(false); // ✅ Correct useState
 
     useEffect(() => {
         dispatch(fetchMyBooksRequest());
@@ -215,7 +209,7 @@ const MyBooks = () => {
                 </div>
             )}
 
-            {selectedPDF && (
+            {showModal && selectedPDF && (
                 <div className="pdf-modal">
                     <div className="pdf-modal-content">
                         <button className="close-btn" onClick={handleClose}>x</button>
