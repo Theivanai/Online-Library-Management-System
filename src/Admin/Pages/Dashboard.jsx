@@ -570,7 +570,7 @@ const Dashboard = () => {
                 </>
             )}
 
-            <ToastContainer position="top-right" autoClose={1200} closeButton={false}/>
+            <ToastContainer position="top-right" autoClose={1200} closeButton={false} />
         </div>
     );
 };
