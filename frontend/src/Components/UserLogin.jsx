@@ -241,7 +241,6 @@ import { loginRequest } from '../../src/User/Pages/Redux/Slices/userSlice';
 
 const UserLogin = () => {
     const [showpassword, setShowPassword] = useState(false);
-    const [hasshowntoast, sethasshowntoast] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -257,33 +256,17 @@ const UserLogin = () => {
     }, [navigate]);
 
     // ✅ Handle toast on login success or error
-    // useEffect(() => {
-    //     if (user) {
-    //         toast.success("Login successful");
-    //         setTimeout(() => {
-    //             navigate(mustResetPassword ? '/reset-password' : '/user/dashboard');
-    //         }, 1500);
-    //     }
-    //     if (error) {
-    //         toast.error(error);
-    //     }
-    // }, [user, error, mustResetPassword, navigate]);
-
     useEffect(() => {
-        if (user && !hasshowntoast) {
+        if (user) {
             toast.success("Login successful");
-            sethasshowntoast(true);
             setTimeout(() => {
                 navigate(mustResetPassword ? '/reset-password' : '/user/dashboard');
-            }, 1200);
+            }, 1500);
         }
-
-        if (error && !hasshowntoast) {
+        if (error) {
             toast.error(error);
-            sethasshowntoast(true);
         }
-    }, [user, error, mustResetPassword, navigate, hasshowntoast]);
-
+    }, [user, error, mustResetPassword, navigate]);
 
     const formik = useFormik({
         initialValues: {
